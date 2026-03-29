@@ -21,7 +21,6 @@ const Index = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const handleDraw = useCallback(() => {
