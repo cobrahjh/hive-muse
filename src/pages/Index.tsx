@@ -1,15 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { Settings, Copy, Check, Loader2, Download, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Copy, Check, Loader2, Download, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
 const MOCK_IMAGES = [
