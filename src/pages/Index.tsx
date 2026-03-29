@@ -19,6 +19,7 @@ const MOCK_IMAGES = [
 const Index = () => {
   const [prompt, setPrompt] = useState("");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
 
