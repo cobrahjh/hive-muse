@@ -167,6 +167,67 @@ const Index = () => {
           </div>
         </section>
       </main>
+
+      {/* Lightbox Modal */}
+      {lightboxIndex !== null && (
+        <div
+          className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center"
+          onClick={() => setLightboxIndex(null)}
+        >
+          {/* Close */}
+          <button
+            onClick={() => setLightboxIndex(null)}
+            className="absolute top-5 right-5 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Prev */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxIndex((lightboxIndex - 1 + MOCK_IMAGES.length) % MOCK_IMAGES.length);
+            }}
+            className="absolute left-4 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+          >
+            <ChevronLeft size={28} />
+          </button>
+
+          {/* Image */}
+          <div className="max-w-3xl max-h-[80vh] px-16" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={MOCK_IMAGES[lightboxIndex].replace("w=400&h=400", "w=1200&h=1200")}
+              alt={`Generated art ${lightboxIndex + 1}`}
+              className="max-w-full max-h-[75vh] object-contain rounded-lg"
+            />
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <a
+                href={MOCK_IMAGES[lightboxIndex].replace("w=400&h=400", "w=1200&h=1200")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/80 transition-colors"
+              >
+                <Download size={16} />
+                Download
+              </a>
+              <span className="text-xs text-muted-foreground">
+                {lightboxIndex + 1} / {MOCK_IMAGES.length}
+              </span>
+            </div>
+          </div>
+
+          {/* Next */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxIndex((lightboxIndex + 1) % MOCK_IMAGES.length);
+            }}
+            className="absolute right-4 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+          >
+            <ChevronRight size={28} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
