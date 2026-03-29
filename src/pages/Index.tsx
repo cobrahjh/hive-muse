@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Settings, Copy, Check } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Settings, Copy, Check, Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +19,32 @@ const MOCK_IMAGES = [
 const Index = () => {
   const [prompt, setPrompt] = useState("");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const handleDraw = useCallback(() => {
+    if (!prompt.trim() || isGenerating) return;
+    setIsGenerating(true);
+    setProgress(0);
+  }, [prompt, isGenerating]);
+
+  useEffect(() => {
+    if (!isGenerating) return;
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsGenerating(false);
+          toast.success("Drawing complete!");
+          return 0;
+        }
+        // Accelerate near the end for a natural feel
+        const increment = prev < 70 ? Math.random() * 8 + 2 : Math.random() * 15 + 5;
+        return Math.min(prev + increment, 100);
+      });
+    }, 200);
+    return () => clearInterval(interval);
+  }, [isGenerating]);
 
   const handleCopy = (index: number) => {
     navigator.clipboard.writeText(MOCK_IMAGES[index]);
@@ -53,8 +80,14 @@ const Index = () => {
                 Request a Drawing
               </h2>
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" />
-                <span className="text-xs text-muted-foreground">Ready</span>
+                {isGenerating ? (
+                  <Loader2 size={14} className="text-primary animate-spin" />
+                ) : (
+                  <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {isGenerating ? "Generating..." : "Ready"}
+                </span>
               </div>
             </div>
 
@@ -64,11 +97,26 @@ const Index = () => {
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="describe what you want drawn..."
                 className="flex-1 bg-secondary border-border text-foreground placeholder:text-muted-foreground"
+                disabled={isGenerating}
+                onKeyDown={(e) => e.key === "Enter" && handleDraw()}
               />
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/80 font-semibold tracking-wider px-6">
-                DRAW
+              <Button
+                onClick={handleDraw}
+                disabled={isGenerating || !prompt.trim()}
+                className="bg-primary text-primary-foreground hover:bg-primary/80 font-semibold tracking-wider px-6 disabled:opacity-50"
+              >
+                {isGenerating ? <Loader2 size={16} className="animate-spin" /> : "DRAW"}
               </Button>
             </div>
+
+            {isGenerating && (
+              <div className="space-y-1.5">
+                <Progress value={progress} className="h-1.5 bg-secondary" />
+                <p className="text-[10px] text-muted-foreground tracking-wider">
+                  {Math.round(progress)}% — painting your vision...
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
