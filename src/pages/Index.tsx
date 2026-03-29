@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Settings, Copy, Check } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Settings, Copy, Check, Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
