@@ -97,11 +97,26 @@ const Index = () => {
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="describe what you want drawn..."
                 className="flex-1 bg-secondary border-border text-foreground placeholder:text-muted-foreground"
+                disabled={isGenerating}
+                onKeyDown={(e) => e.key === "Enter" && handleDraw()}
               />
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/80 font-semibold tracking-wider px-6">
-                DRAW
+              <Button
+                onClick={handleDraw}
+                disabled={isGenerating || !prompt.trim()}
+                className="bg-primary text-primary-foreground hover:bg-primary/80 font-semibold tracking-wider px-6 disabled:opacity-50"
+              >
+                {isGenerating ? <Loader2 size={16} className="animate-spin" /> : "DRAW"}
               </Button>
             </div>
+
+            {isGenerating && (
+              <div className="space-y-1.5">
+                <Progress value={progress} className="h-1.5 bg-secondary" />
+                <p className="text-[10px] text-muted-foreground tracking-wider">
+                  {Math.round(progress)}% — painting your vision...
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
