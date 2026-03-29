@@ -94,7 +94,7 @@ const Index = () => {
                 {isGenerating ? (
                   <Loader2 size={20} className="text-primary animate-spin" />
                 ) : (
-                  <span className="h-3 w-3 rounded-full bg-green-400 shadow-[0_0_10px_3px_rgba(74,222,128,0.5)] animate-pulse-glow" />
+                  <span className="h-3 w-3 rounded-full bg-primary shadow-[0_0_10px_3px_hsl(36_100%_50%/0.5)] animate-pulse-glow" />
                 )}
                 <span className="text-base font-semibold text-foreground tracking-wide">
                   {isGenerating ? "Generating..." : "Ready"}
@@ -203,7 +203,7 @@ const Index = () => {
                     className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
                   >
                     {copiedIndex === i ? (
-                      <Check size={14} className="text-green-500" />
+                      <Check size={14} className="text-primary" />
                     ) : (
                       <Copy size={14} />
                     )}
