@@ -22,12 +22,25 @@ const Index = () => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [history, setHistory] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem("hivepainter-history") || "[]");
+    } catch { return []; }
+  });
+  const [showHistory, setShowHistory] = useState(false);
+
+  const saveHistory = (items: string[]) => {
+    setHistory(items);
+    localStorage.setItem("hivepainter-history", JSON.stringify(items));
+  };
 
   const handleDraw = useCallback(() => {
     if (!prompt.trim() || isGenerating) return;
+    const trimmed = prompt.trim();
+    saveHistory([trimmed, ...history.filter(h => h !== trimmed)].slice(0, 20));
     setIsGenerating(true);
     setProgress(0);
-  }, [prompt, isGenerating]);
+  }, [prompt, isGenerating, history]);
 
   useEffect(() => {
     if (!isGenerating) return;
