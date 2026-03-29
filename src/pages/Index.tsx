@@ -90,13 +90,13 @@ const Index = () => {
               <h2 className="text-sm font-semibold tracking-widest uppercase text-primary">
                 Request a Drawing
               </h2>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary">
                 {isGenerating ? (
-                  <Loader2 size={14} className="text-primary animate-spin" />
+                  <Loader2 size={16} className="text-primary animate-spin" />
                 ) : (
-                  <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-green-400 shadow-[0_0_8px_2px_rgba(74,222,128,0.4)] animate-pulse-glow" />
                 )}
-                <span className="text-xs text-muted-foreground">
+                <span className="text-sm font-medium text-foreground tracking-wide">
                   {isGenerating ? "Generating..." : "Ready"}
                 </span>
               </div>
