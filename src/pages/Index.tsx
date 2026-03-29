@@ -1,15 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { Settings, Copy, Check, Loader2, Download, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Copy, Check, Loader2, Download, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
 const MOCK_IMAGES = [
@@ -26,7 +21,6 @@ const Index = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const handleDraw = useCallback(() => {
@@ -73,12 +67,6 @@ const Index = () => {
             AI Art Generator
           </p>
         </div>
-        <button
-          onClick={() => setSettingsOpen(true)}
-          className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-        >
-          <Settings size={20} />
-        </button>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 md:px-10 pb-16 space-y-10">
@@ -237,103 +225,6 @@ const Index = () => {
           </button>
         </div>
       )}
-
-      {/* Settings Panel Overlay */}
-      {settingsOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-background/60 backdrop-blur-sm"
-          onClick={() => setSettingsOpen(false)}
-        />
-      )}
-
-      {/* Settings Panel */}
-      <div
-        className={`fixed top-0 right-0 z-50 h-full w-80 bg-card border-l border-border shadow-2xl transition-transform duration-300 ease-in-out ${
-          settingsOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between p-5 border-b border-border">
-          <h2 className="text-sm font-semibold tracking-widest uppercase text-primary">
-            Settings
-          </h2>
-          <button
-            onClick={() => setSettingsOpen(false)}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-          >
-            <X size={18} />
-          </button>
-        </div>
-
-        <div className="p-5 space-y-6 overflow-y-auto h-[calc(100%-65px)]">
-          {/* Model */}
-          <div className="space-y-2">
-            <Label className="text-xs tracking-wider uppercase text-muted-foreground">Model</Label>
-            <Select defaultValue="standard">
-              <SelectTrigger className="bg-secondary border-border text-foreground">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fast">Fast</SelectItem>
-                <SelectItem value="standard">Standard</SelectItem>
-                <SelectItem value="premium">Premium</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Separator className="bg-border" />
-
-          {/* Image Size */}
-          <div className="space-y-2">
-            <Label className="text-xs tracking-wider uppercase text-muted-foreground">Size</Label>
-            <Select defaultValue="1024">
-              <SelectTrigger className="bg-secondary border-border text-foreground">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="512">512 × 512</SelectItem>
-                <SelectItem value="1024">1024 × 1024</SelectItem>
-                <SelectItem value="1920">1920 × 1080</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Separator className="bg-border" />
-
-          {/* Steps */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <Label className="text-xs tracking-wider uppercase text-muted-foreground">Steps</Label>
-              <span className="text-xs text-muted-foreground">30</span>
-            </div>
-            <Slider defaultValue={[30]} max={50} min={10} step={5} className="w-full" />
-          </div>
-
-          <Separator className="bg-border" />
-
-          {/* Toggles */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label className="text-sm text-foreground">Auto-save to gallery</Label>
-              <Switch defaultChecked />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label className="text-sm text-foreground">HD upscale</Label>
-              <Switch />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label className="text-sm text-foreground">Notifications</Label>
-              <Switch defaultChecked />
-            </div>
-          </div>
-
-          <Separator className="bg-border" />
-
-          {/* Version info */}
-          <div className="pt-2">
-            <p className="text-[10px] text-muted-foreground tracking-wider">HIVEPAINTER v1.0.0</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
