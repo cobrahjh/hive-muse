@@ -203,7 +203,7 @@ const Index = () => {
                     className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
                   >
                     {copiedIndex === i ? (
-                      <Check size={14} className="text-green-500" />
+                      <Check size={14} className="text-primary" />
                     ) : (
                       <Copy size={14} />
                     )}
