@@ -128,6 +128,44 @@ const Index = () => {
                 </p>
               </div>
             )}
+
+            {/* Prompt History */}
+            {history.length > 0 && (
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <History size={14} />
+                  <span>History ({history.length})</span>
+                </button>
+
+                {showHistory && (
+                  <div className="space-y-1 max-h-40 overflow-y-auto">
+                    {history.map((item, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-md bg-secondary/50 group"
+                      >
+                        <button
+                          onClick={() => { setPrompt(item); setShowHistory(false); }}
+                          className="text-xs text-muted-foreground hover:text-foreground transition-colors truncate text-left flex-1"
+                          disabled={isGenerating}
+                        >
+                          {item}
+                        </button>
+                        <button
+                          onClick={() => saveHistory(history.filter((_, idx) => idx !== i))}
+                          className="text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 
