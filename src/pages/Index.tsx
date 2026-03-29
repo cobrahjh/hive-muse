@@ -138,7 +138,10 @@ const Index = () => {
                 key={i}
                 className="bg-card border-border overflow-hidden group hover:border-primary/40 transition-colors"
               >
-                <div className="aspect-square overflow-hidden">
+                <div
+                  className="aspect-square overflow-hidden cursor-pointer"
+                  onClick={() => setLightboxIndex(i)}
+                >
                   <img
                     src={src}
                     alt={`Generated art ${i + 1}`}
