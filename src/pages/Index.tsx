@@ -19,6 +19,32 @@ const MOCK_IMAGES = [
 const Index = () => {
   const [prompt, setPrompt] = useState("");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const handleDraw = useCallback(() => {
+    if (!prompt.trim() || isGenerating) return;
+    setIsGenerating(true);
+    setProgress(0);
+  }, [prompt, isGenerating]);
+
+  useEffect(() => {
+    if (!isGenerating) return;
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsGenerating(false);
+          toast.success("Drawing complete!");
+          return 0;
+        }
+        // Accelerate near the end for a natural feel
+        const increment = prev < 70 ? Math.random() * 8 + 2 : Math.random() * 15 + 5;
+        return Math.min(prev + increment, 100);
+      });
+    }, 200);
+    return () => clearInterval(interval);
+  }, [isGenerating]);
 
   const handleCopy = (index: number) => {
     navigator.clipboard.writeText(MOCK_IMAGES[index]);
