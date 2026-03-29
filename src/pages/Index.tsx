@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Copy, Check, Loader2, Download, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Copy, Check, Loader2, Download, X, ChevronLeft, ChevronRight, History, Trash2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,12 +22,25 @@ const Index = () => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [history, setHistory] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem("hivepainter-history") || "[]");
+    } catch { return []; }
+  });
+  const [showHistory, setShowHistory] = useState(false);
+
+  const saveHistory = (items: string[]) => {
+    setHistory(items);
+    localStorage.setItem("hivepainter-history", JSON.stringify(items));
+  };
 
   const handleDraw = useCallback(() => {
     if (!prompt.trim() || isGenerating) return;
+    const trimmed = prompt.trim();
+    saveHistory([trimmed, ...history.filter(h => h !== trimmed)].slice(0, 20));
     setIsGenerating(true);
     setProgress(0);
-  }, [prompt, isGenerating]);
+  }, [prompt, isGenerating, history]);
 
   useEffect(() => {
     if (!isGenerating) return;
@@ -113,6 +126,44 @@ const Index = () => {
                 <p className="text-[10px] text-muted-foreground tracking-wider">
                   {Math.round(progress)}% — painting your vision...
                 </p>
+              </div>
+            )}
+
+            {/* Prompt History */}
+            {history.length > 0 && (
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <History size={14} />
+                  <span>History ({history.length})</span>
+                </button>
+
+                {showHistory && (
+                  <div className="space-y-1 max-h-40 overflow-y-auto">
+                    {history.map((item, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-md bg-secondary/50 group"
+                      >
+                        <button
+                          onClick={() => { setPrompt(item); setShowHistory(false); }}
+                          className="text-xs text-muted-foreground hover:text-foreground transition-colors truncate text-left flex-1"
+                          disabled={isGenerating}
+                        >
+                          {item}
+                        </button>
+                        <button
+                          onClick={() => saveHistory(history.filter((_, idx) => idx !== i))}
+                          className="text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </CardContent>
