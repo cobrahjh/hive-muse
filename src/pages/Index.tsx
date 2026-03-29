@@ -73,12 +73,6 @@ const Index = () => {
             AI Art Generator
           </p>
         </div>
-        <button
-          onClick={() => setSettingsOpen(true)}
-          className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-        >
-          <Settings size={20} />
-        </button>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 md:px-10 pb-16 space-y-10">
