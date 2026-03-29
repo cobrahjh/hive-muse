@@ -80,8 +80,14 @@ const Index = () => {
                 Request a Drawing
               </h2>
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" />
-                <span className="text-xs text-muted-foreground">Ready</span>
+                {isGenerating ? (
+                  <Loader2 size={14} className="text-primary animate-spin" />
+                ) : (
+                  <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {isGenerating ? "Generating..." : "Ready"}
+                </span>
               </div>
             </div>
 
