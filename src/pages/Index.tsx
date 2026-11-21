@@ -290,6 +290,10 @@ const Index = () => {
             <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mt-0.5">
               AI Art Generator
             </p>
+            {/* Said here as well as in the footer line (public/hive-ai-label.js), which sits below the gallery. */}
+            <p className="text-xs text-muted-foreground mt-1">
+              Pictures made here are AI-generated with Stable Diffusion
+            </p>
           </div>
           {status && (
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
