@@ -43,16 +43,18 @@
   // Spacing lives on the inner box: a page's own `* { padding:0 }` reaches the host and wins there.
   el('style',
     ':host{display:block;background:#0d0d0f;border-top:1px solid hsl(0 0% 18%)}' +
-    'div{padding:10px 16px 0;text-align:center;font:12px/1.5 Inter,system-ui,sans-serif;color:hsl(0 0% 72%)}' +
+    // --hive-fab-reserve is set by hive-feedback-widget.js: room for its fixed button, so it never
+    // sits on the link at phone width. None is kept when the label is placed inside an element.
+    'div{padding:10px 16px var(--hive-fab-reserve,0px);text-align:center;font:12px/1.5 Inter,system-ui,sans-serif;color:hsl(0 0% 72%)}' +
     'p{margin:0}' +
     'a{display:inline-block;padding:13px 8px;color:hsl(37 91% 55%)}' +
     'a:focus-visible{outline:2px solid hsl(37 91% 55%);outline-offset:-2px}' +
-    '.ref{color:hsl(0 0% 60%)}', root);
+    '.ref{color:hsl(0 0% 60%)}:host([data-inline]) div{padding-bottom:0}', root);
   var box = el('div', '', root);
 
   var output = attr('data-output');
   if (output) el('p', output, box);
-  el('p', 'AI-generated with ' + madeWith + ', directed by King_Cobra74', box);
+  el('p', 'This app is AI-generated with ' + madeWith + ', directed by King_Cobra74', box);
 
   var checked = attr('data-checked');
   var guide = attr('data-guide');
@@ -66,5 +68,14 @@
   link.setAttribute('target', '_blank');
   link.setAttribute('rel', 'noopener noreferrer');
 
-  document.body.appendChild(host);
+  // data-into="<selector>": a page that fills the screen (a chat, an editor) names the element the
+  // label goes inside. No match, or a selector the browser rejects: the end of the page, with a warning.
+  var into = attr('data-into');
+  var slot = null;
+  if (into) {
+    try { slot = document.querySelector(into); } catch (e) { slot = null; }
+    if (!slot) console.warn('hive-ai-label: data-into matched nothing; the label is at the end of the page');
+  }
+  if (slot) host.setAttribute('data-inline', '');
+  (slot || document.body).appendChild(host);
 })();
