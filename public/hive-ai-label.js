@@ -11,6 +11,7 @@
  *   data-output     what the app produces for its users, when that is AI-made too
  *   data-checked    the date this app was last audited against the guide
  *   data-guide      the version of the labelling guide it was audited against
+ *   data-thing      "page" for a document page; left out, or anything else, reads "app"
  *
  * The tag goes at the end of <body>. No frame guard, on purpose: several apps are normally seen
  * framed inside Stream Control, and a label that hides in a frame is a label nobody reads.
@@ -27,6 +28,7 @@
     return;
   }
   var DOT = ' ' + String.fromCharCode(183) + ' ';
+  var thing = attr('data-thing') === 'page' ? 'page' : 'app';
 
   var el = function (name, text, parent) {
     var node = document.createElement(name);
@@ -37,7 +39,7 @@
 
   var host = document.createElement('footer');
   host.setAttribute('data-hive-ai-label', '');
-  host.setAttribute('aria-label', 'How this app was made');
+  host.setAttribute('aria-label', 'How this ' + thing + ' was made');
   var root = host.attachShadow({ mode: 'open' });
 
   // Spacing lives on the inner box: a page's own `* { padding:0 }` reaches the host and wins there.
@@ -54,7 +56,7 @@
 
   var output = attr('data-output');
   if (output) el('p', output, box);
-  el('p', 'This app is AI-generated with ' + madeWith + ', directed by King_Cobra74', box);
+  el('p', 'This ' + thing + ' is AI-generated with ' + madeWith + ', directed by King_Cobra74', box);
 
   var checked = attr('data-checked');
   var guide = attr('data-guide');
